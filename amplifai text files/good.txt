@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMPLIFAI - Amp</title>
+    <style>
+        :root {
+            --amp-purple: #7c3aed;
+            --amp-dark: #1e1e2d;
+            --amp-light: #f8fafc;
+            --panel-collapsed: 32px;
+            --panel-expanded: 280px;
+        }
+        
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            height: 100vh;
+            display: flex;
+            background: #f7f7f8;
+            overflow: hidden;
+        }
+        
+        /* Side Panel */
+        #side-panel {
+            width: var(--panel-collapsed);
+            height: 100%;
+            background: var(--amp-dark);
+            transition: width 0.2s ease;
+            border-right: 1px solid #2d3748;
+        }
+        
+        #side-panel:hover, #side-panel.locked {
+            width: var(--panel-expanded);
+        }
+        
+        /* Main Chat */
+        #chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Chat History */
+        #chat-history {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        /* Input Area */
+        .input-container {
+            position: relative;
+            padding: 12px 16px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .message-input {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        textarea {
+            flex: 1;
+            border: none;
+            resize: none;
+            outline: none;
+            font-size: 16px;
+            line-height: 1.5;
+            max-height: 200px;
+            padding: 10px 14px;
+            padding-right: 50px;
+            border-radius: 18px;
+            background: #f9fafb;
+            font-family: inherit;
+        }
+        
+        /* Buttons - EXACTLY LIKE MY UI */
+        .btn-attach {
+            position: absolute;
+            left: 16px;
+            bottom: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #6b7280;
+        }
+        
+        .btn-send {
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
+            background: var(--amp-purple);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Message Bubbles */
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 18px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .user-message {
+            background: var(--amp-purple);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .bot-message {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-bottom-left-radius: 4px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Settings Button */
+        #settings-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        /* Splash of Color */
+        .color-splash {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, rgba(124, 58, 237, 0) 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Side Panel -->
+    <div id="side-panel"></div>
+    
+    <!-- Main Chat -->
+    <div id="chat-container">
+        <!-- Settings Button -->
+        <button id="settings-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M19.4 15C19.2669 15.3016 19.227 15.6362 19.2851 15.9606C19.3432 16.2849 19.497 16.5836 19.726 16.8146C19.955 17.0456 20.2485 17.1979 20.5677 17.2519C20.8869 17.3058 21.2161 17.2589 21.508 17.118L21.6 17.07C21.7784 16.9789 21.9216 16.8316 22.0072 16.6509C22.0928 16.4701 22.1159 16.2665 22.0726 16.072C22.0293 15.8775 21.922 15.7033 21.768 15.578C21.614 15.4527 21.4225 15.3839 21.224 15.382H19.938C19.7076 15.382 19.4866 15.2907 19.3216 15.1276C19.1566 14.9645 19.0608 14.7424 19.054 14.508C19.054 14.188 18.926 13.882 18.698 13.654L18.6 13.556C18.4449 13.4017 18.3405 13.203 18.3006 12.9876C18.2607 12.7722 18.2872 12.5506 18.3766 12.352C18.466 12.1534 18.6135 11.9879 18.798 11.878C18.9825 11.7681 19.1949 11.7192 19.406 11.738H21.224C21.4225 11.7361 21.614 11.6673 21.768 11.542C21.922 11.4167 22.0293 11.2425 22.0726 11.048C22.1159 10.8535 22.0928 10.6499 22.0072 10.4691C21.9216 10.2884 21.7784 10.1411 21.6 10.05L21.508 10.002C21.2161 9.86111 20.8869 9.81421 20.5677 9.86815C20.2485 9.92209 19.955 10.0744 19.726 10.3054C19.497 10.5364 19.3432 10.8351 19.2851 11.1594C19.227 11.4838 19.2669 11.8184 19.4 12.12C19.506 12.358 19.554 12.618 19.54 12.878C19.54 13.148 19.48 13.41 19.368 13.65L19.292 13.792C19.1985 13.9593 19.0542 14.0915 18.88 14.17C18.7058 14.2485 18.5109 14.2691 18.324 14.2288C18.1371 14.1885 17.9685 14.0895 17.844 13.946L17.792 13.884C17.654 13.724 17.47 13.614 17.268 13.57C17.09 13.532 16.908 13.54 16.734 13.594L16.572 13.65C16.2849 13.7589 15.9663 13.7681 15.6728 13.6761C15.3793 13.584 15.1283 13.3963 14.96 13.142L14.894 13.042C14.7257 12.7877 14.6505 12.4827 14.6814 12.1789C14.7123 11.8751 14.8473 11.5923 15.062 11.378L15.16 11.28C15.384 11.056 15.54 10.77 15.608 10.458C15.676 10.146 15.652 9.822 15.54 9.524L15.492 9.402C15.382 9.114 15.382 8.802 15.492 8.514L15.54 8.402C15.652 8.104 15.676 7.78 15.608 7.468C15.54 7.156 15.384 6.87 15.16 6.646L15.062 6.548C14.8473 6.33372 14.7123 6.05094 14.6814 5.74714C14.6505 5.44334 14.7257 5.13834 14.894 4.884L14.96 4.784C15.1283 4.52966 15.3793 4.34203 15.6728 4.24994C15.9663 4.15785 16.2849 4.16711 16.572 4.276L16.734 4.332C16.908 4.386 17.09 4.394 17.268 4.356C17.47 4.312 17.654 4.202 17.792 4.042L17.844 3.98C17.9685 3.83654 18.1371 3.73748 18.324 3.69719C18.5109 3.6569 18.7058 3.67754 18.88 3.756C19.0542 3.83446 19.1985 3.96666 19.292 4.134L19.368 4.276C19.48 4.516 19.54 4.778 19.54 5.048C19.554 5.308 19.506 5.568 19.4 5.806L19.354 5.902C19.2669 6.09838 19.227 6.41381 19.2851 6.71815C19.3432 7.02249 19.497 7.29638 19.726 7.50536C19.955 7.71435 20.2485 7.85091 20.5677 7.89485C20.8869 7.93879 21.2161 7.88791 21.508 7.752L21.6 7.704C21.7784 7.61294 21.9216 7.46559 22.0072 7.28485C22.0928 7.10411 22.1159 6.90054 22.0726 6.70604C22.0293 6.51153 21.922 6.33732 21.768 6.21202C21.614 6.08672 21.4225 6.01789 21.224 6.016H19.938C19.7076 6.016 19.4866 5.92466 19.3216 5.76156C19.1566 5.59846 19.0608 5.3764 19.054 5.142C19.0608 4.9076 19.1566 4.68554 19.3216 4.52244C19.4866 4.35934 19.7076 4.268 19.938 4.268H21.224C21.4225 4.26611 21.614 4.19728 21.768 4.07198C21.922 3.94668 22.0293 3.77247 22.0726 3.57796C22.1159 3.38346 22.0928 3.17989 22.0072 2.99915C21.9216 2.81841 21.7784 2.67106 21.6 2.58L21.508 2.532C21.2161 2.39111 20.8869 2.34421 20.5677 2.39815C20.2485 2.45209 19.955 2.60441 19.726 2.83539C19.497 3.06638 19.3432 3.36506 19.2851 3.6894C19.227 4.01374 19.2669 4.34838 19.4 4.65L19.454 4.754C19.506 4.868 19.54 4.99 19.54 5.114V5.142Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        
+        <!-- Chat History -->
+        <div id="chat-history">
+            <div class="message bot-message">Hello! I'm Amp, your AI assistant. How can I help today?</div>
+        </div>
+        
+        <!-- Input Area -->
+        <div class="input-container">
+            <div class="message-input">
+                <!-- Paperclip Button (EXACT SVG) -->
+                <button class="btn-attach">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21.44 11.05L12.25 20.24C11.1242 21.3658 9.59723 21.9983 8.00505 21.9983C6.41286 21.9983 4.88589 21.3658 3.76005 20.24C2.6342 19.1142 2.00171 17.5872 2.00171 15.995C2.00171 14.4028 2.6342 12.8759 3.76005 11.75L12.95 2.56C14.6942 0.815791 17.3058 0.815791 19.05 2.56C20.7942 4.30421 20.7942 6.91579 19.05 8.66L9.86005 17.85C9.14678 18.5633 8.15322 18.5633 7.44005 17.85C6.72678 17.1368 6.72678 16.1432 7.44005 15.43L15.43 7.44" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="file" id="file-input" hidden>
+                </button>
+                
+                <textarea placeholder="Message Amp..." rows="1"></textarea>
+                
+                <!-- Send Button -->
+                <button class="btn-send">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Color Splash -->
+        <div class="color-splash" style="bottom: -50px; right: -50px;"></div>
+    </div>
+
+    <script>
+        // Panel Behavior
+        const panel = document.getElementById('side-panel');
+        panel.addEventListener('click', () => {
+            panel.classList.toggle('locked');
+        });
+        
+        // File Handling
+        const fileInput = document.getElementById('file-input');
+        document.querySelector('.btn-attach').addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files[0].size > 100 * 1024 * 1024) {
+                alert("File exceeds 100MB limit");
+                return;
+            }
+            addMessage(`📎 ${e.target.files[0].name}`, true);
+        });
+        
+        // Message Handling
+        const chatHistory = document.getElementById('chat-history');
+        const textarea = document.querySelector('textarea');
+        const sendBtn = document.querySelector('.btn-send');
+        
+        function addMessage(text, isUser) {
+            const msg = document.createElement('div');
+            msg.className = isUser ? 'message user-message' : 'message bot-message';
+            msg.textContent = text;
+            chatHistory.appendChild(msg);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+        
+        // Send Message
+        sendBtn.addEventListener('click', sendMessage);
+        textarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        function sendMessage() {
+            const message = textarea.value.trim();
+            if (message) {
+                addMessage(message, true);
+                textarea.value = '';
+                
+                // Simulate Amp typing
+                setTimeout(() => {
+                    addMessage("This is Amp's response. The interface now has:", false);
+                    addMessage("- Paperclip in the exact spot as my UI", false);
+                    addMessage("- Send button positioned correctly", false);
+                    addMessage("- Settings button top-right", false);
+                    addMessage("- Color splash effect", false);
+                }, 800);
+            }
+        }
+        
+        // Settings Button
+        document.getElementById('settings-btn').addEventListener('click', () => {
+            alert("Settings panel would open here");
+        });
+    </script>
+</body>
+</html>

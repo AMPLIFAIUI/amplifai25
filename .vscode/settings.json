@@ -1,0 +1,9 @@
+{
+  "notebook.defaultFormatter": "Continue.continue",
+  "github.copilot.chat.codesearch.enabled": true,
+  "github.copilot.chat.agent.thinkingTool": true,
+  "github.copilot.chat.languageContext.typescript.enabled": true,
+  "github.copilot.advanced": {},
+  "python.analysis.autoImportCompletions": true,
+  "git.ignoreLimitWarning": true
+}

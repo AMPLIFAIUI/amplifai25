@@ -1,0 +1,9 @@
+{
+  "authorized_user": "Daniel Barrass",
+  "password": "Amped",
+  "permissions": {
+    "self_modify": true,
+    "knowledge_ingest": true,
+    "code_execution": true
+  }
+}

@@ -1,0 +1,2 @@
+cd c:\Users\User\amplifai\server
+python -m uvicorn app:app --reload --port 8000

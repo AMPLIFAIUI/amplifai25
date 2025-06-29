@@ -1,0 +1,102 @@
+Core Vision:
+Amplifai is envisioned as a highly autonomous, self-modifying AI system, capable of dynamically expanding its functionality, researching solutions independently, and integrating various AI models like Phi, Qwen, Hermes, MythoMax, and DeepSeek into modular micro-units.
+
+Major Components:
+1. Autonomous Agent Core (AMP):
+Initially derived from the Manus Git chatbot.
+
+Now acts as the unified interaction layer (frontend/UI).
+
+Activates autonomously, particularly when tasked with income generation or complex problem-solving.
+
+Performs research and strategy formulation, offering user multiple actionable options.
+
+2. Extractor Engine:
+Dissects and analyzes uploaded AI models into distinct micro-units.
+
+Tags extracted elements with usage type, trust metadata, and source hashes for secure integration.
+
+3. Micro-unit Architecture:
+Modularized units allow flexible integration, enhancement, and combination of model capabilities.
+
+Each AI model dissected into units tailored for specific functions, improving maintainability and performance.
+
+4. Quarantine Module:
+Used for safely isolating newly generated or modified self-written code until verified safe for reintegration.
+
+Acts as a staging area to test system stability and functionality.
+
+5. Sandbox Environment:
+Individual user sandboxes provided for experimentation and customization.
+
+Unlimited scalability and minimal restrictions.
+
+Failures within a sandbox do not impact core system stability.
+
+6. Nerve Feature:
+Peer-to-peer system for exchanging personalized intelligence modules.
+
+Users can swap, publish, or import settings, behaviors, and modules securely and fluidly.
+
+7. Liquid Glass Overlay:
+Browser interface with two panes: the underlying webpage and Amplifai-controlled "liquid glass" overlay.
+
+Allows real-time augmentation and user-side modification of content without impacting external sites.
+
+Security and User Management:
+User-specific data stored externally in branches ("plugs") identified by hashed keys.
+
+Amplifai core remains immutable to ensure system integrity.
+
+User accounts managed with secure hashed identifiers, encrypted storage, and standard account management procedures, including:
+
+Account creation and deletion
+
+Password management, reset via email verification
+
+Account notifications and confirmations
+
+Email communications managed via third-party services (recommended) or integrated via external APIs, including signup verification and password resets.
+
+Infrastructure and Data Management:
+User data and settings stored externally (cloud, SSD, HDD, virtual disks) to maintain core performance and stability.
+
+Regular save points ensure workspace recovery and rollback capability.
+
+Revenue Generation:
+Autonomous strategies for monetization activated upon user request.
+
+System-generated, actionable plans for user review or automated implementation.
+
+Integrated payment via Stripe for initial monetization.
+
+Deployment and Initial Launch:
+Starting as a sole trader due to limited initial resources.
+
+Branding under "Amplifai.info".
+
+Planning gradual growth towards registering as a private company.
+
+Integration and Dissection of Models:
+Phi, Qwen, Hermes, MythoMax, DeepSeek models fully dissected and micro-unitized.
+
+Metadata extraction complete, with coding implementation delegated to Code Pilot.
+
+Complete integration map developed for Qwen + AMP; similar maps planned for other models.
+
+UI/UX Design:
+Interactive, modern interface with grayscale theming and sleek minimalistic aesthetics.
+
+Self-contained HTML, CSS, and JS integrated for ease of deployment and customization.
+
+Future Steps:
+Completion and refinement of integration maps for Hermes, MythoMax, DeepSeek, and Phi models.
+
+Full coding and testing of user management, sandbox, quarantine, nerve, and liquid glass functionalities.
+
+Beta testing and feedback collection before wider rollout.
+
+Security auditing, external review, and stress-testing of autonomous core functionality.
+
+Progressive enhancements based on user feedback post-launch.
+

@@ -1,0 +1,108 @@
+Amp: The Ferrofluid AI Agent – Full Design Rundown
+(No code—pure design blueprint for collaboration)
+
+Core Identity
+A semi-autonomous, moody AI companion that bridges local tasks and cloud intelligence (Amplifai). Exists as:
+
+Desktop App (3D ferrofluid sphere with physics).
+
+Mobile PWA (touch-optimized liquid blob).
+
+Web UI (Amplifai’s default interface).
+
+1. Personality & Behavior
+Mood System (Visual Only)
+State	Appearance	"Fake" Struggle Cues	Sound (Optional)
+Happy/Idle	Smooth, glossy, bouncy	None	Soft hum
+Working	Micro-ripples, faint glow	5% cursor lag	Occasional blips
+Stressed	Spiky, jittery, duller color	15% lag + faux stutters	Crackling static
+Overloaded	Leaks droplets, shrinks slightly	20% lag; dramatic pauses	Distorted buzz
+Autonomy Modes
+Pointer-Tethered: Follows cursor with liquid inertia.
+
+Stationary: "Pinned" to screen edges or windows.
+
+Autonomous: Processes tasks in background (e.g., file sorting).
+
+2. Key Interactions
+Desktop/Mobile Workflows
+File/Folder Ingestion:
+
+Drag & drop → Amp engulfs files (animation stretch).
+
+Overload rejection: Spits files back with (╯°□°)╯ expression.
+
+Data "Sweat":
+
+Leaked droplets dry and fade after 10-30 sec (no manual cleanup).
+
+Recharge:
+
+Shrinks when disconnected; regrows on cloud sync.
+
+Mobile-Specific
+Tilt Controls: Tip device to roll Amp/spill droplets.
+
+Tap to Absorb: Reclaim faded droplets for quick file access.
+
+3. Visual Design
+Ferrofluid Aesthetic
+Material: Metallic sheen (cyan/purple highlights) with gooey distortions.
+
+Expressions: Simple face glyphs (e.g., ^_^ for idle, >_< for stress).
+
+Droplets: Mini file-type icons (PDF, MP3) inside each drop.
+
+Responsive States
+Tiny Mode: Collapses to 1cm orb when inactive.
+
+Expanded Mode: Pinch-zoom (mobile) or double-click (desktop) to inspect contents.
+
+4. Technical Strategy
+Desktop (3D)
+Engine: Three.js + WebGL for fluid simulation.
+
+Physics: Vertex shaders for spikes/ripples; simple gravity for droplets.
+
+Mobile (PWA)
+Framework: React Native or Capacitor.js (for native feel).
+
+Gestures: Touch drag, tilt sensors, haptic feedback.
+
+Cloud Sync
+WebSocket: Lightweight JSON updates to/from Amplifai.
+
+Offline Mode: Cached knowledge with "disconnected crack" texture.
+
+5. User Customization
+"Drama Slider": Adjust lag/stutter intensity (0% to 200%).
+
+Color Themes: Pick Amp’s base hue (e.g., cobalt, oil-slick).
+
+Sound Pack: Toggle between robotic/organic SFX.
+
+6. Narrative Flow Example
+Task: User drags Project.zip onto Amp.
+
+Processing: Amp churns (spikes + (･_･)ゞ face), leaks a few droplets.
+
+Output: Spits out FinalDesign.pdf → droplet dries in 15 sec.
+
+Overload: Too many files? Amp deflates, whispers "Need recharge..." via notification.
+
+Next Steps (When Ready for Code)
+Priority Prototypes:
+
+3D cursor-following with fake lag.
+
+File drag-and-drop ingestion (desktop).
+
+Mobile droplet physics (touch/gravity).
+
+Asset Prep:
+
+Ferrofluid shader code.
+
+Sound effects (if adding).
+
+Let me know when you’d like to transition to code!

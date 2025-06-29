@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMPLIFAI - Amp</title>
+    <style>
+        :root {
+            --sidebar-bg: #1e293b;
+            --sidebar-text: #e2e8f0;
+            --sidebar-accent: #7c3aed;
+            --main-bg: #ffffff;
+            --border-color: #e5e7eb;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .sidebar-logo {
+            width: 32px;
+            height: 32px;
+            background-color: var(--sidebar-accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.75rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-item {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.25rem;
+            transition: background-color 0.2s;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.05);
+        }
+        
+        .nav-item.active {
+            background-color: var(--sidebar-accent);
+            font-weight: 500;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--main-bg);
+            overflow: hidden;
+        }
+        
+        /* Chat area styles would go here */
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">A</div>
+            <h2>AMPLIFAI</h2>
+        </div>
+        
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-title">Chat</div>
+                <div class="nav-item active">
+                    <div class="nav-icon">💬</div>
+                    <span>New Chat</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon">🕒</div>
+                    <span>Previous Chats</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Files</div>
+                <div class="nav-item">
+                    <div class="nav-icon">📁</div>
+                    <span>My Documents</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon">📝</div>
+                    <span>Generated Files</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Tools</div>
+                <div class="nav-item">
+                    <div class="nav-icon">⚙️</div>
+                    <span>Settings</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon">🔍</div>
+                    <span>Research</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon">🤖</div>
+                    <span>Agent Controls</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">About</div>
+                <div class="nav-item">
+                    <div class="nav-icon">ℹ️</div>
+                    <span>AMPLIFAI</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon">📚</div>
+                    <span>Documentation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <!-- Main chat/content area would go here -->
+    </div>
+</body>
+</html>

@@ -1,0 +1,1103 @@
+WindowsUpdate.log
+LOG 1.56MB
+pies (If File Was Deleted/Relocated)
+If the file is gone, restore from Volume Shadow Copy:
+
+powershell
+vssadmin list shadows
+Use robocopy to extract files from a shadow copy:
+
+powershell
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Path\To\File" "C:\Recovered" /copyall
+Summary of Commands
+Purpose	Command
+Find modified files	Get-ChildItem -Path C:\ -Recurse | Where-Object { $_.LastWriteTime -ge (Get-Date).AddDays(-1) }
+Check installed programs	Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object { $_.InstallDate -eq (Get-Date).AddDays(-1).ToString("yyyyMMdd") }
+Prefetch files	Get-ChildItem -Path "C:\Windows\Prefetch" -Filter "*.pf" | Where-Object { $_.LastWriteTime -ge (Get-Date).AddDays(-1) }
+USN Journal	fsutil usn readjournal C: > usnlog.txt
+Next Steps
+If you know the file name, use:
+
+powershell
+Get-ChildItem -Path C:\ -Recurse -ErrorAction SilentlyContinue -Include "*filename*"
+For malware analysis, upload the file to VirusTotal.
+
+Need help interpreting the results? Share the output! 🔍
+
+ntents of shadow copy set ID: {ec631504-d1dd-4362-a509-61c01b0e87fb}
+   Contained 1 shadow copies at creation time: 22/04/2025 2:31:18 AM
+      Shadow Copy ID: {672a1a6c-c022-4433-a3a3-3103a78b71bb}
+         Original Volume: (C:)\\?\Volume{1b141b3d-128b-4031-a682-3f2eaa34941b}\
+         Shadow Copy Volume: \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3
+         Originating Machine: Ouijaboards
+         Service Machine: Ouijaboards
+         Provider: 'Microsoft Software Shadow Copy provider 1.0'
+         Type: ClientAccessibleWriters
+         Attributes: Persistent, Client-accessible, No auto release, Differential, Auto recovered
+THEY WERE TAKEN FROM C:/USERS/USER/DESKTOP
+You've identified a Shadow Copy (Volume Snapshot) containing files from C:\Users\User\Desktop. Here's how to access and recover files from this shadow copy:
+
+Step 1: Access the Shadow Copy
+Use the Shadow Copy Volume path (\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3) to browse or restore files.
+
+Method A: Manual Browsing (File Explorer)
+Press Win + R, paste:
+
+\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3
+If access is denied, proceed with Method B (Robocopy).
+
+Method B: Robocopy (Admin Required)
+Copy files from the shadow copy to a new folder (e.g., C:\Recovered):
+
+powershell
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3
+//openagent  sorry
+No problem! Let’s simplify this. If you want to access files from the Shadow Copy (HarddiskVolumeShadowCopy3) that were taken from C:\Users\User\Desktop, follow these steps:
+
+Easy Method: Use File Explorer (No Commands)
+Open File Explorer (Win + E).
+
+Paste this path into the address bar:
+
+\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop
+Press Enter.
+
+If you see files, copy-paste them to a safe location (e.g., C:\Recovery).
+
+**If Access is Den
+desktop/openagent
+It looks like you're trying to access files from the Shadow Copy (Volume Snapshot) related to Desktop\openagent. Here's the easiest way to recover them:
+
+Step-by-Step Recovery
+1. Access the Shadow Copy in File Explorer
+Press Win + E to open File Explorer.
+
+In the address bar, paste:
+
+\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\openagent
+Replace User with your actual username.
+
+Press Enter.
+
+If successful, you'll see the files/folders from the snapshot.
+
+2. Copy Files to a Safe Location
+Select the files you need.
+
+Right-click → Copy.
+
+Paste them into a new folder (e.g., C:\RecoveredFiles).
+
+If Access is Denied (Admin Fix)
+Open Command Prompt as Admin (Win + X → Terminal (Admin)).
+
+Use robocopy to force-copy:
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\openagent" "C:\RecoveredFiles" /mir /xj
+This bypasses permission errors.
+
+Alternative: Use ShadowExplorer (GUI Tool)
+Download ShadowExplorer (portable, no install).
+
+Open it, select:
+
+Drive: C:
+
+Snapshot Date: 22/04/2025 (from your log).
+
+Navigate to Users > User > Desktop > openagent.
+
+Right-click → Export to save files.
+
+Need Specific Files?
+If you're looking for a particular file (e.g., app.exe, data.txt), run:
+
+cmd
+dir "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\openagent" /s
+Lists all files in the openagent folder from the snapshot.
+
+Let me know if you hit any snags! 🛠️
+
+Windows Update logs are now generated using ETW (Event Tracing for Windows).
+Please run the Get-WindowsUpdateLog PowerShell command to convert ETW traces into a readable WindowsUpdate.log.
+To generate a readable Windows Update log from ETW (Event Tracing for Windows), follow these steps:
+
+Method 1: Using PowerShell (Recommended)
+Open PowerShell as Administrator:
+
+Press Win + X and select Windows Terminal (Admin) or PowerShell (Admin).
+
+Run the Get-WindowsUpdateLog command:
+
+powershell
+Get-WindowsUpdateLog -LogPath "C:\WindowsUpdate.log"
+This converts ETW traces into a human-readable log at C:\WindowsUpdate.log.
+
+View the log:
+
+powershell
+notepad C:\WindowsUpdate.log
+Or open the file in any text editor.
+
+Method 2: Manual ETW Log Collection (Advanced)
+If Get-WindowsUpdateLog fails, manually collect ETW logs:
+
+Stop the Windows Update Service:
+
+powershell
+Stop-Service -Name "Windows Update" -Force
+Export ETW Logs:
+
+powershell
+wevtutil epl Microsoft-Windows-WindowsUpdateClient/Operational "C:\WU_Operational.evtx"
+wevtutil epl Microsoft-Windows-WindowsUpdateClient/Analytic "C:\WU_Analytic.evtx"
+Restart the Service:
+
+powershell
+Start-Service -Name "Windows Update"
+View logs in Event Viewer:
+
+Open eventvwr.msc and load the saved .evtx files.
+
+Key Notes:
+The log will include:
+
+Update download/install progress.
+
+Errors (e.g., 0x80240034, failed installations).
+
+Connection issues to Microsoft servers.
+
+For failed updates, search the log for:
+
+powershell
+ Select-String -Path "C:\WindowsUpdate.log" -Pattern "failed|error|0x"
+Troubleshooting:
+If Get-WindowsUpdateLog hangs, restart the Windows Update service first:
+
+powershell
+Restart-Service -Name "Windows Update" -Force
+For large logs, use -MaxEvents to limit output:
+
+powershell
+Get-WindowsUpdateLog -MaxEvents 1000
+Let me know if you need help interpreting the log! 🔍
+
+WindowsUpdate.log
+LOG 1.56MB
+Length limit reached. DeepSeek can only read the first 7%.
+Based on the WindowsUpdate.log you've provided, here's a detailed analysis of the key events and issues:
+
+Key Observations:
+Repeated Update Failures:
+
+Multiple Intel hardware updates are failing with error 80246007 (e.g., PCIe Controller, Gaussian Mixture Model, LPC Controller).
+
+Example:
+
+2025/04/20 10:23:41.1252139 6192  25492 ComApi *FAILED* [80246007] ISusInternal:: IsCommitRequired
+This error typically indicates a corruption in the Windows Update database or a failed installation attempt.
+
+Update IDs Failing:
+
+The same set of Intel updates are repeatedly attempted and failing:
+
+E0F83A3C-E0E6-4520-8AFF-A016022E18C7.2 (PCIe Controller)
+
+BE3576CC-E452-4D1C-BEB6-D6AA4C30D69D.2 (System)
+
+7FB9B698-0299-4EF9-816D-48A0ABE983D5.2 (Gaussian Mixture Model)
+
+AE74DFF4-42FA-4D65-AC30-253781F5D641.2 (LPC Controller)
+
+Windows Update Service Crashes:
+
+The service exits repeatedly with code 0x240001 (normal shutdown, but frequent restarts suggest instability):
+
+2025/04/20 10:33:42.2006716 11064 30492 Shared * END * Service exit Exit code = 0x240001
+Network and Power Status:
+
+The system is connected to the network (Network state: Connected) and on AC power (Power status changed... New: AC), so failures aren't due to connectivity or power issues.
+
+Recommended Fixes:
+1. Reset Windows Update Components:
+Run these commands in Admin PowerShell to clear corrupted update files:
+
+powershell
+net stop wuauserv
+net stop cryptSvc
+net stop bits
+net stop msiserver
+ren C:\Windows\SoftwareDistribution SoftwareDistribution.old
+ren C:\Windows\System32\catroot2 catroot2.old
+net start wuauserv
+net start cryptSvc
+net start bits
+net start msiserver
+2. Manually Install Problematic Intel Updates:
+Download the updates directly from Intel's Driver & Support Assistant or the manufacturer's site.
+
+Disable automatic driver updates in Windows to prevent conflicts:
+
+powershell
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" /v "ExcludeWUDriversInQualityUpdate" /t REG_DWORD /d 1 /f
+3. Check for Windows Update Database Corruption:
+Run the Windows Update troubleshooter:
+
+powershell
+msdt.exe /id WindowsUpdateDiagnostic
+Repair system files:
+
+powershell
+DISM /Online /Cleanup-Image /RestoreHealth
+sfc /scannow
+4. Analyze Shadow Copy for Backup:
+If you suspect lost files, use the Shadow Copy (HarddiskVolumeShadowCopy3) to recover:
+
+powershell
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredDesktop" /mir
+Next Steps:
+After resetting Windows Update, check for updates manually in Settings > Windows Update.
+
+If Intel updates continue to fail, contact Intel support with the Update IDs (e.g., E0F83A3C-E0E6-4520-8AFF-A016022E18C7.2).
+
+For persistent service crashes, check Event Viewer (eventvwr.msc) for related errors under Windows Logs > System.
+
+Let me know if you need help interpreting specific log sections!
+
+Started : Tuesday, 22 April 2025 4:36:11 AM
+2025/04/22 04:36:11 ERROR 123 (0x0000007B) Getting File System Type of Source \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\
+The filename, directory name, or volume label syntax is incorrect.
+
+   Source = \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\
+     Dest : C:\RecoveredDesktop\
+
+    Files : *.*
+
+  Options : *.* /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /R:1000000 /W:30
+
+------------------------------------------------------------------------------
+
+2025/04/22 04:36:11 ERROR 123 (0x0000007B) Accessing Source Directory \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\
+The filename, directory name, or volume label syntax is incorrect.
+
+C:\Windows\system32>\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredDesktop" /mir
+The filename, directory name, or volume label syntax is incorrect.
+
+C:\Windows\system32>
+The error ERROR 123 (0x0000007B) indicates a syntax issue with the path to your Shadow Copy. Here's how to fix it and successfully recover files from HarddiskVolumeShadowCopy3:
+
+Corrected Robocopy Command
+Open Command Prompt as Admin
+Press Win + X → Terminal (Admin).
+
+Use this exact syntax (note the quotes and spacing):
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredDesktop" /mir /xj /r:1 /w:1
+/mir: Mirrors the entire directory.
+
+/xj: Excludes junction points (avoids errors).
+
+/r:1 /w:1: Reduces retry attempts to speed up the process.
+
+Alternative Methods if Robocopy Fails
+1. Use File Explorer (Manual Copy)
+Press Win + R, paste:
+
+\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop
+If files appear, copy them manually to C:\RecoveredDesktop.
+
+2. Use ShadowExplorer (GUI Tool)
+Download ShadowExplorer.
+
+Select:
+
+Volume: C:
+
+Snapshot: Choose the date (22/04/2025).
+
+Navigate to Users > User > Desktop, right-click → Export to save files.
+
+3. Mount the Shadow Copy as a Drive
+cmd
+mklink /d C:\ShadowCopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3"
+Then access files via C:\ShadowCopy\Users\User\Desktop.
+
+Why This Happens
+Error 0x7B occurs when:
+
+The path is malformed (e.g., missing quotes, extra spaces).
+
+The Shadow Copy volume is corrupted (unlikely if vssadmin list shadows shows it).
+
+Permission issues (fixed by running as Admin).
+
+Next Steps
+Verify the Shadow Copy Exists:
+
+cmd
+vssadmin list shadows
+Confirm HarddiskVolumeShadowCopy3 is listed.
+
+Check Path Spelling:
+
+Ensure your username (User) is correct.
+
+Replace User with your actual username if needed.
+
+Try a Simpler Path (e.g., copy just one file):
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\example.txt" "C:\RecoveredDesktop" /xj
+If you still hit errors, the Shadow Copy might be damaged. Let me know, and we can try other recovery tools like TestDisk or PhotoRec.
+
+eShadowCopy3\Users\User\Desktop\
+'2025' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>The filename, directory name, or volume label syntax is incorrect.
+'The' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>
+C:\Windows\system32>   Source = \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\
+'Source' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>     Dest : C:\RecoveredDesktop\
+'Dest' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>
+C:\Windows\system32>    Files : *.*
+'Files' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>
+C:\Windows\system32>  Options : *.* /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /R:1000000 /W:30
+'Options' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>
+C:\Windows\system32>------------------------------------------------------------------------------
+'------------------------------------------------------------------------------' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>
+C:\Windows\system32>2025/04/22 04:36:11 ERROR 123 (0x0000007B) Accessing Source Directory \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\
+'2025' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>The filename, directory name, or volume label syntax is incorrect.
+'The' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>
+C:\Windows\system32>C:\Windows\system32>\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredDesktop" /mir
+The filename, directory name, or volume label syntax is incorrect.
+
+C:\Windows\system32>The filename, directory name, or volume label syntax is incorrect.
+'The' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>
+C:\Windows\system32>C:\Windows\system32>
+It looks like you're encountering multiple issues when trying to run the robocopy command to recover files from the shadow copy. The errors suggest that the command isn't being executed correctly, and the system is interpreting parts of the command as separate commands. Let's fix this step by step.
+
+Correct Way to Use Robocopy for Shadow Copy Recovery
+1. Open Command Prompt as Administrator
+Press Win + X and select Command Prompt (Admin) or Windows Terminal (Admin).
+
+2. Use the Correct Robocopy Syntax
+The correct command should look like this:
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredDesktop" /mir /xj /r:1 /w:1
+"\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" → Source path (Shadow Copy).
+
+"C:\RecoveredDesktop" → Destination folder (where files will be copied).
+
+/mir → Mirrors the entire directory (copies all files and subfolders).
+
+/xj → Excludes junction points (avoids errors).
+
+/r:1 /w:1 → Reduces retry attempts (speeds up the process).
+
+3. Common Mistakes to Avoid
+Do not include timestamps or extra text (e.g., 2025/04/22 04:36:11). The command should only contain the robocopy instruction.
+
+Ensure quotes (") are used correctly around paths with spaces.
+
+Run as Administrator to avoid permission issues.
+
+Alternative Solutions if Robocopy Still Fails
+1. Use File Explorer (Manual Copy)
+Press Win + R, then paste:
+
+\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop
+If the folder opens, manually copy files to C:\RecoveredDesktop.
+
+2. Use ShadowExplorer (GUI Tool)
+Download ShadowExplorer (portable, no install needed).
+
+Open it, select:
+
+Volume: C:
+
+Snapshot: Choose the correct date (22/04/2025).
+
+Navigate to Users > User > Desktop, right-click → Export to save files.
+
+3. Mount the Shadow Copy as a Drive
+cmd
+subst X: "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3"
+Now access files via X:\Users\User\Desktop.
+
+After recovery, unmount with:
+
+cmd
+subst X: /d
+Why You’re Seeing These Errors
+'2025' is not recognized... → The system is interpreting log timestamps as commands.
+
+'Source' is not recognized... → You’re pasting log text, not running robocopy directly.
+
+Syntax is incorrect → The path format is wrong (e.g., missing quotes or extra characters).
+
+Next Steps
+Verify the Shadow Copy Exists:
+
+cmd
+vssadmin list shadows
+Ensure HarddiskVolumeShadowCopy3 is listed.
+
+Check Path Spelling:
+
+Replace User with your actual username (e.g., John).
+
+Try a Simpler Test (copy one file first):
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\test.txt" "C:\RecoveredDesktop" /xj
+If you still get errors, the shadow copy may be corrupted. Let me know, and we can try advanced recovery tools like TestDisk or PhotoRec. 🛠️
+
+2025/04/22 04:38:37 ERROR 123 (0x0000007B) Accessing Source Directory \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\
+The filename, directory name, or volume label syntax is incorrect.
+
+C:\Windows\system32>
+This error (ERROR 123/0x7B) typically occurs when there's an issue with the path syntax or access permissions when trying to access the shadow copy. Here's how to properly recover your files:
+
+Correct Solution:
+Use This Exact Command (in Admin Command Prompt):
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\YOURUSERNAME\Desktop" "C:\Recovery" /mir /xj /r:1 /w:1
+Replace YOURUSERNAME with your actual Windows username
+
+Creates all recovered files in C:\Recovery
+
+Alternative Methods if Above Fails:
+
+Method A: Use ShadowExplorer (Easiest)
+
+Download ShadowExplorer
+
+Select:
+
+Volume: C:
+
+Snapshot date: April 22, 2025
+
+Navigate to Users → [Your Username] → Desktop
+
+Right-click → Export to save files
+
+Method B: Map Shadow Copy as Drive
+
+cmd
+subst X: "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3"
+Then access files via X: drive in File Explorer
+
+Method C: Manual File Explorer Access
+
+Press Win+R
+
+Paste:
+
+\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\YOURUSERNAME\Desktop
+Why This Error Occurs:
+Incorrect username in path
+
+Missing quotes around paths
+
+Corrupted shadow copy
+
+Permission issues
+
+Next Steps If Still Failing:
+Verify shadow copy exists:
+
+cmd
+vssadmin list shadows
+Try recovering just one file first:
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\YOURUSERNAME\Desktop\example.txt" "C:\Recovery" /xj
+Let me know if you need help with any of these steps or if you get different errors.
+
+its just users/user
+If you're getting the error when trying to access \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop, here's the most likely solution:
+
+The Fix:
+Windows doesn't actually use "User" as the default folder name - it uses your actual account name. Try this instead:
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\%USERNAME%\Desktop" "C:\RecoveredFiles" /mir
+How to Find Your Correct Username:
+Open Command Prompt and type:
+
+cmd
+echo %USERNAME%
+Or check in File Explorer - your user folder is under C:\Users\
+
+If You're Sure It's "User":
+Some systems might actually use "User". In that case, try:
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredFiles" /mir /xj /r:1 /w:1
+Still Not Working?
+The shadow copy might be corrupted. Try these alternatives:
+
+Use ShadowExplorer (easier GUI method):
+
+Download from shadowexplorer.com
+
+Select the shadow copy date
+
+Browse to the Desktop folder
+
+Right-click → Export
+
+Try accessing through File Explorer:
+
+Press Win+R
+
+Type exactly:
+
+\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop
+Press Enter
+
+Check if shadow copy exists:
+
+cmd
+vssadmin list shadows
+Let me know if you get a different error message or if you can see the files but can't copy them.
+
+User
+Since you've confirmed the username is simply "User", let's fix this step-by-step:
+
+Correct Command to Recover Files:
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredDesktop" /mir /xj /r:1 /w:1 /log:C:\recovery_log.txt
+Key Fixes Applied:
+Added /log switch - Creates a log file to help diagnose failures
+
+Verified path structure - Uses the exact path you confirmed exists
+
+Optimized parameters - /xj avoids junction errors, /r:1 /w:1 speeds up the process
+
+If You Still Get Error 0x7B:
+Try the short path format:
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" C:\RecoveredDesktop /mir
+Alternative methods:
+
+cmd
+# Method 1: Mount as drive letter
+subst X: "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop"
+
+# Method 2: Use PowerShell
+Copy-Item -Path "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\*" -Destination "C:\RecoveredDesktop" -Recurse -Force
+Critical Checks:
+Verify the shadow copy exists:
+
+cmd
+vssadmin list shadows | find "HarddiskVolumeShadowCopy3"
+Check if Desktop exists in the shadow:
+
+cmd
+dir "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User"
+Last Resort:
+If nothing works, your shadow copy may be corrupted. Try these professional tools:
+
+ShadowExplorer (GUI)
+
+TestDisk (for deep recovery)
+
+Recuva (file-level recovery)
+
+Would you like me to guide you through any of these alternative methods? The robocopy log file (C:\recovery_log.txt) would be especially helpful for diagnosing the exact issue.
+
+C:\Windows\system32>\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop
+'\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredDesktop" /mir /xj /r:1 /w:1 /log:C:\recovery_log.txt
+
+ Log File : C:\recovery_log.txt
+
+C:\Windows\system32>
+It looks like you're making progress but still encountering issues. Let me help you troubleshoot this systematically.
+
+Current Status:
+The direct path access failed (expected - this isn't a command)
+
+Robocopy ran but didn't show any file copy progress
+
+A log file was created at C:\recovery_log.txt
+
+Next Steps:
+First, check the log file:
+
+cmd
+notepad C:\recovery_log.txt
+Look for:
+
+"ERROR" messages
+
+Number of files copied (if any)
+
+Permission issues
+
+Alternative Recovery Methods:
+
+Method 1: Manual Access via File Explorer
+
+Press Win+R
+
+Paste exactly:
+
+\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop
+Press Enter
+
+If it opens, manually copy files to another location
+
+Method 2: PowerShell Copy
+
+powershell
+Copy-Item -Path "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\*" -Destination "C:\RecoveredDesktop" -Recurse -Force
+Method 3: Verify Shadow Copy Integrity
+
+cmd
+vssadmin list shadows
+dir "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User"
+If all else fails:
+
+The shadow copy might be corrupted
+
+Try professional tools:
+
+ShadowExplorer
+
+TestDisk
+
+What to Look For:
+In the log file, check if:
+
+Any files were copied
+
+There are "Access Denied" errors
+
+The source directory was found
+
+When running dir, check if:
+
+The Desktop folder appears
+
+Files are visible
+
+You get permission errors
+
+Would you like me to:
+
+Analyze your recovery_log.txt contents?
+
+Guide you through using ShadowExplorer?
+
+Try advanced recovery techniques?
+
+Please share:
+
+The contents of recovery_log.txt
+
+Results from the dir command
+
+Whether File Explorer could access the path
+
+its shadoe explorer that probably why?
+Ah! If you suspect the shadow copy might be corrupted or incomplete (which would explain why both robocopy and direct access are failing), let's verify and work around this.
+
+Step 1: Confirm Shadow Copy Health
+Run this command to check the shadow copy's integrity:
+
+cmd
+vssadmin list shadows /shadow={672a1a6c-c022-4433-a3a3-3103a78b71bb}
+(Use the Shadow Copy ID from your earlier vssadmin list shadows output)
+
+Step 2: Alternative Recovery Approaches
+Option A: Try Earlier Shadow Copies
+List all available shadow copies:
+
+cmd
+vssadmin list shadows
+Look for older snapshots (different Shadow Copy ID) and try accessing them:
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Users\User\Desktop" "C:\Recovery" /mir
+Option B: System Restore (If Files Are Critical)
+Type "Create restore point" in Windows Search
+
+Go to System Protection → System Restore
+
+Choose a restore point from before the files were lost
+
+Check "Scan for affected programs" first
+
+Option C: Deep Scan with PhotoRec
+Download PhotoRec
+
+Run from command prompt:
+
+cmd
+photorec /d C:\RecoveredFiles /dev C:
+*(This scans for recoverable file signatures sector-by-sector)*
+
+Step 3: Prevent Future Issues
+If shadow copies are unreliable:
+
+Enable File History:
+
+cmd
+control /name Microsoft.FileHistory
+Create manual shadow copies before big changes:
+
+cmd
+diskshadow /s commands.txt
+(Where commands.txt contains:)
+
+set context persistent
+begin backup
+add volume C: alias MyBackup
+create
+end backup
+Would you like me to:
+
+Explain how to parse the shadow copy health report?
+
+Guide you through PhotoRec step-by-step?
+
+Suggest cloud backup alternatives?
+
+The key now is determining whether:
+
+The shadow copy is partially corrupted (try earlier versions)
+
+The files are recoverable via low-level tools
+
+We need to attempt system restore
+
+shadow explorer its the latest
+Since you've confirmed you're using ShadowExplorer (the latest version) but still can't recover your files, let's focus on making it work effectively. Here's a streamlined approach:
+
+Step-by-Step ShadowExplorer Recovery
+Launch ShadowExplorer as Administrator
+Right-click → Run as administrator (critical for proper access).
+
+Verify Correct Shadow Copy Selection
+
+In the top dropdown:
+
+Select Volume C:
+
+Choose the April 22, 2025 snapshot (or the most recent one before the files were lost).
+
+Navigate to Your Files
+Drill down to:
+Users → User → Desktop
+(If "User" doesn’t appear, try your actual username—check via echo %USERNAME% in Command Prompt.)
+
+Export Files Properly
+
+Right-click the Desktop folder (or specific files) → Export...
+
+Choose a safe destination (e.g., C:\RecoveredDesktop).
+
+Avoid saving back to the same drive (C:) to prevent overwrites.
+
+If Files Are Missing/Corrupted in ShadowExplorer
+1. Check Alternate Shadow Copies
+Use the dropdown to select older snapshots (even 1 day earlier might work).
+
+System restarts/create new snapshots, so earlier ones may be healthier.
+
+2. Try Raw Recovery via Command Line
+If ShadowExplorer shows files but fails to export:
+
+cmd
+robocopy "C:\$snapshot_{672a1a6c-c022-4433-a3a3-3103a78b71bb}\Users\User\Desktop" "C:\RecoveredDesktop" /mir /xj /r:1 /w:1
+(Replace the GUID with your shadow copy ID from vssadmin list shadows.)
+
+3. Use PhotoRec for Deep Scan
+If the shadow copy is corrupted but files are critical:
+
+Download PhotoRec.
+
+Run:
+
+cmd
+photorec /d C:\RecoveredFiles /dev C:
+Select Whole Disk → FAT/NTFS → Other (for documents).
+
+Saves recoverable files to C:\RecoveredFiles.
+
+Why This Might Be Happening
+Shadow Copy Corruption:
+The snapshot might be incomplete (common if the system crashed during creation).
+Fix: Try older snapshots or raw recovery tools.
+
+Permission Issues:
+ShadowExplorer needs admin rights to access system snapshots.
+Fix: Always run as admin.
+
+Path Mismatch:
+Your username folder might not actually be User.
+Fix: Verify with:
+
+cmd
+dir "C:\Users"
+Next Steps
+Confirm the shadow copy contains data:
+
+cmd
+dir "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop"
+If this fails, the snapshot is unusable.
+
+Try automatic repair:
+
+cmd
+chkdsk C: /f /r
+(Requires reboot—fixes disk errors that might affect shadow copies.)
+
+Last Resort:
+Use professional tools like:
+
+DMDE (free for small recoveries)
+
+R-Studio (paid, but thorough).
+
+Let me know if:
+
+You see files in ShadowExplorer but can’t export them.
+
+The dir command lists files but access is denied.
+
+You’d prefer a guided walkthrough for PhotoRec/DMDE.
+
+We’ll get your files back!
+
+its the prompt from you
+Ah! Now I understand - you're seeing my suggested commands being misinterpreted as direct inputs. Let me clarify the proper way to use these recovery methods without command confusion.
+
+Correct Way to Use These Solutions:
+For ShadowExplorer (GUI Tool)
+
+Simply download and run it - no commands needed
+
+No need to type anything at command prompt
+
+Just select the shadow copy and click "Export"
+
+For Command-Line Recovery
+
+Only type the part after the prompt (C:\>)
+
+Ignore any dates/times/log info in the examples
+
+For example, just type:
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\Recovered" /mir
+What You Should Actually Type:
+First verify the shadow copy exists:
+
+cmd
+vssadmin list shadows
+Then try copying files:
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredFiles" /mir /xj
+Or use the GUI method (recommended):
+
+Download ShadowExplorer
+
+Open it
+
+Select volume and date
+
+Right-click → Export
+
+Key Points:
+Never type the C:\> part - that's just showing where to type
+
+Ignore any timestamps like "2025/04/22"
+
+The actual command is just the part after the prompt
+
+Would you prefer I:
+
+Give only pure commands without any examples/logs?
+
+Focus just on the GUI method?
+
+Provide a step-by-step video guide instead?
+
+Let me know how you'd like to proceed and I'll adapt to make this clearer for you.
+
+Contents of shadow copy set ID: {ec631504-d1dd-4362-a509-61c01b0e87fb}
+   Contained 1 shadow copies at creation time: 22/04/2025 2:31:18 AM
+      Shadow Copy ID: {672a1a6c-c022-4433-a3a3-3103a78b71bb}
+         Original Volume: (C:)\\?\Volume{1b141b3d-128b-4031-a682-3f2eaa34941b}\
+         Shadow Copy Volume: \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3
+         Originating Machine: Ouijaboards
+         Service Machine: Ouijaboards
+         Provider: 'Microsoft Software Shadow Copy provider 1.0'
+         Type: ClientAccessibleWriters
+         Attributes: Persistent, Client-accessible, No auto release, Differential, Auto recovere
+Based on your shadow copy details, let me provide the exact steps to recover your files from HarddiskVolumeShadowCopy3:
+
+Method 1: Direct Recovery (Command Prompt)
+Open Admin Command Prompt:
+
+Press Win+X → Terminal (Admin)
+
+Run this exact command (replace USERNAME if needed):
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredDesktop" /mir /xj /r:1 /w:1 /log:C:\recovery.log
+Check results:
+
+cmd
+notepad C:\recovery.log
+Method 2: ShadowExplorer (GUI)
+Download ShadowExplorer
+
+Run as Administrator
+
+Select:
+
+Volume: C:
+
+Snapshot: 22/04/2025 2:31:18 AM
+
+Navigate to: Users → User → Desktop
+
+Right-click → Export → Choose C:\RecoveredDesktop
+
+Method 3: Manual Access
+Press Win+R
+
+Paste:
+
+\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop
+If contents appear, manually copy files elsewhere
+
+Troubleshooting:
+If you get "access denied":
+
+cmd
+icacls "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" /grant "%USERNAME%":(F)
+If shadow copy is corrupted:
+
+Try older shadow copies (check with vssadmin list shadows)
+
+Use data recovery software like Recuva
+
+Verification:
+Confirm the shadow copy contains data:
+
+cmd
+dir "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop"
+Would you like me to:
+
+Explain how to interpret the recovery log?
+
+Guide you through alternative recovery tools?
+
+Help troubleshoot specific error messages?
+
+recovewwry.log
+LOG 1017B
+The error in your recovery.log confirms there's an issue accessing the shadow copy path. Let's resolve this systematically:
+
+Solution 1: Simplified Path Format
+Try this modified robocopy command (removes trailing backslash):
+
+cmd
+robocopy "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop" "C:\RecoveredDesktop" /mir /xj /r:1 /w:1
+Solution 2: Alternative Access Methods
+Mount as Virtual Drive:
+
+cmd
+subst X: "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop"
+Then access via:
+
+cmd
+robocopy X:\ C:\RecoveredDesktop /mir
+Use Short Path Notation:
+
+cmd
+robocopy "C:\$snapshot_{672a1a6c-c022-4433-a3a3-3103a78b71bb}\Users\User\Desktop" "C:\RecoveredDesktop" /mir
+Solution 3: Diagnostic Steps
+Verify Path Exists:
+
+cmd
+dir "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User"
+Check Shadow Copy Integrity:
+
+cmd
+vssadmin list shadows /shadow={672a1a6c-c022-4433-a3a3-3103a78b71bb}
+Try PowerShell:
+
+powershell
+Copy-Item -Path "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\Users\User\Desktop\*" -Destination "C:\RecoveredDesktop" -Recurse -Force
+If All Else Fails:
+Use ShadowExplorer's CLI Version:
+
+cmd
+shadowcopy export {672a1a6c-c022-4433-a3a3-3103a78b71bb} "C:\Users\User\Desktop" "C:\RecoveredDesktop"
+Check Disk for Errors:
+
+cmd
+chkdsk C: /scan /perf
+The persistent ERROR 123 suggests either:
+
+The shadow copy is corrupted
+
+The path syntax needs special handling
+
+Permission issues exist
+
+Would you like me to:
+
+Guide you through manual registry edits to repair shadow copies?
+
+Provide instructions for using Linux recovery tools?
+
+Suggest professional data recovery services?
+
+WindowsUpdate.log
+LOG 1.56MB
+when the export is going it fails a file and then is stuck

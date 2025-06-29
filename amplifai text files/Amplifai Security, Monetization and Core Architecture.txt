@@ -1,0 +1,291 @@
+# Amplifai: Security, Monetization, and Core Architecture Document (Expanded Edition)
+
+## Overview
+
+Amplifai is a dual-layer AI platform designed for autonomous task execution, customizable modules, sandbox experimentation, and immutable-core integrity. This document provides a hyper-detailed explanation of its security protocols, monetization strategies, tier access controls, model protection systems, quarantine and validation mechanisms, and user interface logic.
+
+---
+
+## 1. Core Security Architecture
+
+### 1.1 Immutable Core
+
+* The **Immutable Core** is the unalterable heart of Amplifai. It includes:
+
+  * Decision-making logic
+  * Task orchestration protocols
+  * Reasoning and planning models
+* This layer is **read-only** at runtime.
+* All core logic is cryptographically signed and validated at each boot cycle.
+* It cannot be rewritten, extended, or injected by user modules, AMP rewrites, or external packages.
+* Any core update must come from system-level releases, validated by the Amplifai team.
+
+### 1.2 Inner Quarantine Bubble (IQB)
+
+* IQB allows AMP to test and simulate potentially useful modules **without risking the core**.
+* Only modules from:
+
+  * Trusted contributors
+  * Internal AMP evolution
+  * Admin/creator fast-tracking
+    may enter IQB.
+* IQB runs:
+
+  * Memory-isolated containers
+  * Read-only test environments
+  * Versioned execution logs
+* Outcome: pass/fail → either replicates parts or discards.
+
+### 1.3 Core Monitoring
+
+* The core constantly:
+
+  * Validates its own logic trees
+  * Hash-checks its functions
+  * Compares current behavior to trusted patterns
+* If mutation or drift is detected, the system halts, isolates, and issues a log.
+
+---
+
+## 2. Outer Layer: Execution, Risk, and Innovation
+
+### 2.1 Purpose of the Outer Layer
+
+* This is where all task logic lives — scripts, prompts, rewrites, nerves (shared plugins), sandbox experiments.
+* Built to support:
+
+  * Messy code
+  * Fast iteration
+  * Peer learning
+  * Semi-trusted execution
+
+### 2.2 Quarantine System
+
+* Any new code, logic, or external module:
+
+  * Is parsed and held in quarantine
+  * Assessed for:
+
+    * Malicious patterns
+    * Unexpected API calls
+    * Import behavior
+    * Intent flags
+* AMP’s `QuarantineManager` scores modules based on execution results, pattern matching, and data usage.
+
+### 2.3 ExtractorEngine
+
+* When a module is messy or partial, AMP doesn’t throw it out.
+* Instead, it:
+
+  * Dissects logic into micro-units
+  * Clones useful parts (e.g., deduplication, filtering, formatting)
+  * Tags each with metadata:
+
+    * Origin
+    * Trust rating
+    * Execution result summary
+
+### 2.4 Sandbox Execution
+
+* Modules that pass quarantine may be executed in a sandbox:
+
+  * File-safe
+  * API-isolated
+  * Permission-bounded
+* Task runs are logged and tracked.
+* Any anomalies immediately pause the execution stack.
+
+---
+
+## 3. Quantum-Grade Security Principles
+
+### 3.1 Quantum Cryptography
+
+* Amplifai anticipates future quantum threats by employing:
+
+  * Post-quantum encryption standards (NTRU, Kyber, Falcon)
+  * Lattice-based digital signatures for code validation
+  * Entropy-enhanced session tokens for user logins and execution tunnels
+
+### 3.2 Distribution Protection
+
+* Model weights are split into runtime chunks and streamed
+* Direct downloads are blocked
+* Any attempt to trace model runtime triggers a shutdown and invalidates the session
+
+### 3.3 Communication Layer
+
+* All AMP-to-AMP messaging (future) will use:
+
+  * Encrypted signatures
+  * Optional QKD if supported by the host
+  * Peer handshake signatures for nerve sharing
+
+---
+
+## 4. Monetization & Tiered Access
+
+### 4.1 Pricing & Plans
+
+| Tier            | Price (AUD)              | Access                                       |
+| --------------- | ------------------------ | -------------------------------------------- |
+| Free            | \$0                      | 10–25 tasks/day, slow queue, limited tools   |
+| Starter (Promo) | \$15/mo (first 3 months) | Full tools, early badge, normal speed        |
+| Premium         | \$25/mo                  | Unlimited tasks, all tools, highest priority |
+
+### 4.2 Subscription Engine
+
+* Powered by Stripe, LemonSqueezy, or Gumroad Subscriptions
+* Backend checks user tier per query and returns:
+
+  * Allowed endpoints
+  * Task limits
+  * Queue priority
+
+### 4.3 Promo Logic
+
+* On account creation:
+
+  * First 3 months = \$15 AUD/month
+  * After 3 months → renews at \$25 AUD
+  * Cancel anytime → downgrades to Free
+
+---
+
+## 5. Usage Control & Licensing
+
+### 5.1 API Gateway
+
+* All requests pass through a gateway that:
+
+  * Checks license/token
+  * Tracks daily usage
+  * Logs timestamps, task types, output count
+
+### 5.2 Rate Limiting
+
+* Per-token usage is enforced dynamically:
+
+  * Free: capped daily by time and function
+  * Starter/Premium: elastic usage with rate smoothing
+
+### 5.3 Anti-Piracy
+
+* Each user token is signed
+* Tokens cannot be reused cross-device without validation
+* Script misuse or key sharing triggers:
+
+  * Account suspension
+  * Token invalidation
+
+---
+
+## 6. UI Control Systems
+
+### 6.1 Suggestions Panel
+
+* Smart task suggestions under input bar
+* Can be collapsed/expanded
+* Stored in local browser state (persistent)
+
+### 6.2 ChatManager Response Rendering
+
+* AMP renders replies as:
+
+  * Strategy cards
+  * Code blocks
+  * File summaries
+  * Step-by-step reasoning (with collapsible trace)
+* Each block includes:
+
+  * Source ID
+  * Execution time
+  * Interactive buttons
+
+### 6.3 AMP PC Preview
+
+* Appears in lower right corner
+* Shows AMP’s live browser automation session
+* Button-triggered or auto-revealed when AMP navigates web pages
+* Allows:
+
+  * “Take Control” to override AMP
+  * View live DOM mirroring
+  * Expand to full-width panel
+
+---
+
+## 7. Developer Trust System (Optional, Modular)
+
+### 7.1 Contributor Profile
+
+* Each contributor has:
+
+  * Trust Score (0–100)
+  * Modules contributed
+  * Peer adoption count
+  * Issue flags
+
+### 7.2 Reputation Use
+
+* High-trust contributors:
+
+  * Get priority quarantine review
+  * May fast-track plugins to sandbox
+* AMP still sandbox-tests everything
+
+### 7.3 Peer Sharing
+
+* Trusted plugins can be shared as “nerves” across users
+* AMP scores them by:
+
+  * Stability
+  * Usage rate
+  * User feedback
+
+---
+
+## 8. Self-Modification Engine (with Safety Layers)
+
+### 8.1 Conditions for Rewrite
+
+* AMP may rewrite logic if:
+
+  * A task repeatedly fails
+  * A plugin is out-of-date
+  * Performance degradation is detected
+
+### 8.2 Rewrite Process
+
+* AMP creates a draft clone
+* Tests it in quarantine
+* Compares performance logs
+* Only uses cloned module **outside the core**
+
+### 8.3 Permanent Record
+
+* Each rewrite is versioned, timestamped, and recoverable
+* System keeps rollback history for audit
+
+---
+
+## 9. Future-Proofing
+
+### 9.1 Modular Growth
+
+* Each system (Sandbox, Quarantine, Reputation, Billing) is modular
+* You can turn systems on/off without rewriting core logic
+
+### 9.2 Full Ecosystem Vision
+
+* Community module library (AMP Nerve Market)
+* Dev reward system based on module adoption
+* Data vault for AI state backups, accessible only to user
+
+---
+
+## Conclusion
+
+Amplifai’s architecture allows high-trust, high-speed AI execution while defending a quantum-locked core. Innovation happens in the outer layer. Learning happens in the quarantine layer. Control is always with the user. And security is woven through every task, every module, and every heartbeat of the system.
+
+**Immutable Core. Intelligent Outer. Infinite Future.**

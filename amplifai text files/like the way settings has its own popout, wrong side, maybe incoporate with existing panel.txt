@@ -1,0 +1,613 @@
+paperclip almost in the correct spot, the embedding symbol in the way<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amplifai - Amp Agent</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --amp-primary: #5e35b1;
+            --amp-secondary: #3949ab;
+            --amp-accent: #7c4dff;
+            --light-color: #f8f9fa;
+            --dark-color: #212121;
+            --success-color: #43a047;
+            --warning-color: #ffb300;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--amp-primary), var(--amp-secondary));
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-badge {
+            background-color: var(--amp-accent);
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .settings-cog {
+            cursor: pointer;
+            font-size: 1.25rem;
+            transition: transform 0.3s;
+            color: white;
+        }
+
+        .settings-cog:hover {
+            transform: rotate(90deg);
+            color: var(--amp-accent);
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            overflow: hidden;
+        }
+
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .chat-history {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+        }
+
+        .message {
+            margin-bottom: 1.25rem;
+            max-width: 85%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-user {
+            align-items: flex-end;
+            margin-left: auto;
+        }
+
+        .message-amp {
+            align-items: flex-start;
+        }
+
+        .message-content {
+            padding: 0.75rem 1.25rem;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .user-message {
+            background-color: var(--amp-primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .amp-message {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: #757575;
+            margin-top: 0.25rem;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+            background-color: white;
+            align-items: center;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.75rem 1.25rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 24px;
+            outline: none;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .chat-input input:focus {
+            border-color: var(--amp-accent);
+            box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.2);
+        }
+
+        .action-icons {
+            display: flex;
+            align-items: center;
+            margin-left: 1rem;
+            gap: 1rem;
+        }
+
+        .action-icons i {
+            font-size: 1.25rem;
+            color: #616161;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-icons i:hover {
+            color: var(--amp-primary);
+            transform: scale(1.1);
+        }
+
+        .send-button {
+            background-color: var(--amp-accent);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .send-button:hover {
+            background-color: var(--amp-primary);
+        }
+
+        .side-panel {
+            background-color: white;
+            border-left: 1px solid #e0e0e0;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            padding: 1.5rem;
+        }
+
+        .side-panel.hidden {
+            transform: translateX(100%);
+            position: absolute;
+            right: 0;
+        }
+
+        .panel-section {
+            margin-bottom: 2rem;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            color: var(--amp-primary);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .chat-history-item {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 3px solid transparent;
+        }
+
+        .chat-history-item:hover {
+            background-color: #f5f5f5;
+            border-left-color: var(--amp-accent);
+        }
+
+        .chat-history-item i {
+            color: var(--amp-primary);
+        }
+
+        .setting-item {
+            margin-bottom: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .setting-control {
+            padding: 0.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            width: 100%;
+            margin-top: 0.75rem;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .auth-form input {
+            padding: 0.75rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .auth-button {
+            padding: 0.75rem;
+            background-color: var(--amp-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .auth-button:hover {
+            background-color: var(--amp-secondary);
+        }
+
+        .amp-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background-color: #ede7f6;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--success-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .side-panel {
+                width: 85%;
+                height: 100%;
+                z-index: 100;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-badge">A</div>
+                <h1>Amplifai</h1>
+            </div>
+            <div class="settings-cog" onclick="toggleSettingsPanel()">
+                <i class="fas fa-sliders-h"></i>
+            </div>
+        </header>
+        <main>
+            <div class="chat-box">
+                <div class="chat-history" id="chat-history">
+                    <!-- Example messages -->
+                    <div class="message message-amp">
+                        <div class="message-content amp-message">
+                            Hello! I'm Amp, your AI assistant in the Amplifai project. How can I help you today?
+                        </div>
+                        <div class="message-time">Today, 10:00 AM</div>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="user-input" placeholder="Message Amp..." onkeypress="handleKeyPress(event)">
+                    <div class="action-icons">
+                        <i class="fas fa-paperclip" onclick="uploadFile()" title="Attach file"></i>
+                        <i class="fas fa-code" onclick="insertCode()" title="Insert code"></i>
+                    </div>
+                    <button class="send-button" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+        <aside class="side-panel hidden" id="side-panel">
+            <div class="panel-section">
+                <h2 class="panel-title">
+                    <i class="fas fa-history"></i> Chat History
+                </h2>
+                <div id="chat-library">
+                    <div class="chat-history-item">
+                        <i class="fas fa-comment"></i>
+                        <span>Getting started with Amp</span>
+                    </div>
+                    <div class="chat-history-item">
+                        <i class="fas fa-terminal"></i>
+                        <span>Code debugging session</span>
+                    </div>
+                    <div class="chat-history-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Project ideas brainstorm</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section">
+                <h2 class="panel-title">
+                    <i class="fas fa-cog"></i> Amp Settings
+                </h2>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">
+                            <i class="fas fa-user-secret"></i>
+                            <span>Incognito Mode</span>
+                        </div>
+                        <small>Don't save this conversation</small>
+                    </div>
+                    <input type="checkbox" id="incognito-mode" class="toggle-switch">
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-label">
+                            <i class="fas fa-brain"></i>
+                            <span>AI Model</span>
+                        </div>
+                        <select id="ai-model" class="setting-control">
+                            <option value="amp-default">Amp Default</option>
+                            <option value="amp-pro">Amp Pro (Experimental)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="amp-status">
+                    <div class="status-indicator"></div>
+                    <span>Amp is online and ready</span>
+                </div>
+            </div>
+            
+            <div class="panel-section">
+                <h2 class="panel-title">
+                    <i class="fas fa-user"></i> Account
+                </h2>
+                <form id="auth-form" class="auth-form" onsubmit="handleAuth(event)">
+                    <input type="text" placeholder="Username" id="username">
+                    <input type="password" placeholder="Password" id="password">
+                    <button type="submit" class="auth-button">Sign In</button>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Current conversation state
+        const conversationState = {
+            isIncognito: false,
+            currentModel: 'amp-default',
+            isAuthenticated: false
+        };
+
+        // DOM elements
+        const sidePanel = document.getElementById('side-panel');
+        const chatHistory = document.getElementById('chat-history');
+        const userInput = document.getElementById('user-input');
+        const incognitoToggle = document.getElementById('incognito-mode');
+        const modelSelect = document.getElementById('ai-model');
+
+        // Toggle settings panel
+        function toggleSettingsPanel() {
+            sidePanel.classList.toggle('hidden');
+        }
+
+        // Handle Enter key press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Send message to Amp
+        function sendMessage() {
+            const message = userInput.value.trim();
+            
+            if (message) {
+                addMessage(message, 'user');
+                userInput.value = '';
+                
+                // Simulate Amp typing indicator
+                const typingIndicator = addTypingIndicator();
+                
+                // Simulate Amp response after delay
+                setTimeout(() => {
+                    removeTypingIndicator(typingIndicator);
+                    generateAmpResponse(message);
+                }, 1500);
+            }
+        }
+
+        // Add message to chat history
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', `message-${sender}`);
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.classList.add('message-content', `${sender}-message`);
+            contentDiv.textContent = text;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.classList.add('message-time');
+            timeDiv.textContent = getCurrentTime();
+            
+            messageDiv.appendChild(contentDiv);
+            messageDiv.appendChild(timeDiv);
+            chatHistory.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            
+            return messageDiv;
+        }
+
+        // Add typing indicator
+        function addTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.classList.add('message', 'message-amp');
+            typingDiv.id = 'typing-indicator';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.classList.add('message-content', 'amp-message');
+            contentDiv.innerHTML = `
+                <div class="typing">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+            
+            typingDiv.appendChild(contentDiv);
+            chatHistory.appendChild(typingDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            
+            return typingDiv;
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator(indicator) {
+            if (indicator && indicator.parentNode) {
+                indicator.parentNode.removeChild(indicator);
+            }
+        }
+
+        // Generate Amp response
+        function generateAmpResponse(userMessage) {
+            let response;
+            
+            // Simple response logic - would be replaced with actual AI integration
+            if (userMessage.toLowerCase().includes('hello') || userMessage.toLowerCase().includes('hi')) {
+                response = "Hello there! I'm Amp, your AI assistant in the Amplifai project. What would you like to explore today?";
+            } else if (userMessage.toLowerCase().includes('help')) {
+                response = "I can help with:\n- Code explanations\n- Debugging assistance\n- Project ideas\n- Technical documentation\n\nJust ask me anything!";
+            } else {
+                response = `I've processed your request about "${userMessage}". This is a simulated response. In the full Amplifai project, I would provide a detailed, intelligent response based on your query.`;
+            }
+            
+            addMessage(response, 'amp');
+        }
+
+        // Get current time in HH:MM AM/PM format
+        function getCurrentTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Convert 0 to 12
+            return `Today, ${hours}:${minutes} ${ampm}`;
+        }
+
+        // Handle file upload
+        function uploadFile() {
+            // Create invisible file input
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.txt,.pdf,.doc,.docx,.js,.py,.java,.cpp';
+            
+            fileInput.onchange = e => {
+                const file = e.target.files[0];
+                if (file) {
+                    addMessage(`[File attached: ${file.name}]`, 'user');
+                    // Here you would handle the file upload to your backend
+                }
+            };
+            
+            fileInput.click();
+        }
+
+        // Handle code insertion
+        function insertCode() {
+            const code = prompt("Enter your code snippet:");
+            if (code) {
+                addMessage(`[Code snippet]:\n${code}`, 'user');
+            }
+        }
+
+        // Handle authentication
+        function handleAuth(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simulate authentication
+            if (username && password) {
+                conversationState.isAuthenticated = true;
+                alert(`Welcome back, ${username}! Amp is now personalized for you.`);
+                toggleSettingsPanel();
+            }
+        }
+
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            incognitoToggle.addEventListener('change', (e) => {
+                conversationState.isIncognito = e.target.checked;
+            });
+            
+            modelSelect.addEventListener('change', (e) => {
+                conversationState.currentModel = e.target.value;
+            });
+        });
+    </script>
+</body>
+</html>in the sample viewer

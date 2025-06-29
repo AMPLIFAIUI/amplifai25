@@ -1,0 +1,59 @@
+AMPLIFAI CORE DESIGN BRAINSTORM
+===============================
+Timestamp: 2024-04-16T15:30:00Z
+
+KEY FEATURES LOCKED
+-------------------
+[v] Collapsible Side Panel (1" ? 3.5")
+    - Hover expands
+    - Click locks
+[v] Chat Behavior
+    - New messages fade from top
+    - User scroll-up doesn't get hijacked
+[v] File System
+    - 100MB upload limit
+    - Paperclip UI (no visible input)
+[v] Visual Identity
+    - Primary: #7c3aed (Purple)
+    - Dark: #1e1e2d
+    - Light: #f7f7f8
+
+PENDING DECISIONS
+-----------------
+? Panel blur intensity: 8px vs 12px  
+? Logo animation: Slide vs Fade  
+? Enterprise tier file encryption  
+
+NEXT PHASE
+----------
+1. Session persistence  
+2. Multi-file exports  
+3. AMPLIFAI watermarking  
+
+
+
+
+
+{
+  "meta": {
+    "participants": ["User", "AI Architect"],
+    "focus": "AMPLIFAI Interface Design"
+  },
+  "key_milestones": [
+    {
+      "timestamp": "15:02:11",
+      "user": "Side panel should pop out 3.5\" on hover",
+      "system": "Implemented CSS transitions"
+    },
+    {
+      "timestamp": "15:18:33",
+      "user": "Chat scroll shouldn't jerk when new messages arrive",
+      "system": "Added scroll position detection logic"
+    },
+    {
+      "timestamp": "15:27:44",
+      "user": "File upload must have paperclip icon",
+      "system": "Styled hidden input with ?? emoji"
+    }
+  ]
+}

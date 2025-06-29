@@ -1,0 +1,11 @@
+[
+  {
+    "applyTo": "resource%3Feq=wgEp6EpA5sl98b8GoRP7qLvNv2mQSn45B8%2FIwR8stFZX6essJfRUOtt8EPxzJGQlVrAgiitCzNgFXKcnQKccJ6nV5JHFGsSz7YoW",
+    "headers": [
+      {
+        "name": "header-name",
+        "value": "header value"
+      }
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+# Example configuration for AMPLIFAI
+# TODO: Replace mock values with real configuration for production
+
+[llm]
+model = "claude-3-7-sonnet-20250219"
+base_url = "https://api.anthropic.com/v1/"
+api_key = "YOUR_API_KEY"
+max_tokens = 8192
+temperature = 0.0
+
+# Optional: Add real vision model and other provider configs as needed
+# [vision]
+# model = "claude-3-7-sonnet-20250219"
+# base_url = "https://api.anthropic.com/v1/"
+# api_key = "YOUR_API_KEY"
+# max_tokens = 8192
+# temperature = 0.0

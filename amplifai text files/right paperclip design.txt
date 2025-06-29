@@ -1,0 +1,8 @@
+
+
+<div class="action-icons">
+                        <i class="fas fa-paperclip" onclick="uploadFile()" title="Attach file"></i>
+                        <i class="fas fa-code" onclick="insertCode()" title="Insert code"></i>
+                    </div>S
+
+<i class="fas fa-paperclip" onclick="uploadFile()" title="Attach file"></i>

@@ -1,0 +1,32 @@
+{
+  "timestamp": 1748231613.498465,
+  "test_results": {
+    "backend": {
+      "error": "unhashable type: 'slice'"
+    },
+    "liquid_ui": {
+      "error": "HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001DEFFD43290>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+    },
+    "preview_panel": {
+      "error": "HTTPConnectionPool(host='localhost', port=8002): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001DEFFD43FD0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+    },
+    "autonomous_economy": {
+      "error": "HTTPConnectionPool(host='localhost', port=8003): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001DEFFD5A0D0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+    },
+    "integration": {
+      "error": "HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /mini-amp/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001DEFFD68610>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+    },
+    "performance": {
+      "total_requests": 10,
+      "successful_requests": 10,
+      "total_time": 20.436280727386475,
+      "requests_per_second": 0.48932582857892976,
+      "success_rate": 1.0
+    }
+  },
+  "summary": {
+    "total_tests": 6,
+    "passed_tests": 1,
+    "failed_tests": 5
+  }
+}

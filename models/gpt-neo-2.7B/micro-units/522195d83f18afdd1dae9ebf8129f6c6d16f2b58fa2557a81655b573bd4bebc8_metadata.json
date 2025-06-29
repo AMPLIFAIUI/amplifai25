@@ -1,0 +1,1 @@
+{"unit_id": "522195d83f18afdd1dae9ebf8129f6c6d16f2b58fa2557a81655b573bd4bebc8", "model_name": "gpt-neo-2.7B", "huggingface_name": "EleutherAI/gpt-neo-2.7B", "model_type": "hf", "usage_type": "general_reasoning", "trust_score": 0.95, "source_hash": "sha256:451c4e406ba4127e2865ed92540cbba594b62f75a9b469384378dd842b202671", "description": "Micro-unit for gpt-neo-2.7B"}

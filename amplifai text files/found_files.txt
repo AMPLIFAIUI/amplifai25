@@ -1,0 +1,79 @@
+
+ Log File : D:\recovery.log
+
+C:\Windows\system32>winfr C: D:\RecoveredFiles /r /n:agent-visualization.js,main.js,*.txt /x /u
+'winfr' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Windows\system32>dir /s E:\FinalRecovery\OpenAgent
+The system cannot find the file specified.
+
+C:\Windows\system32>start E:\FinalRecovery  :: Prevent further data loss
+The system cannot find the file E:\FinalRecovery.
+
+C:\Windows\system32>fsutil behavior set disabledeletenotify 1
+NTFS DisableDeleteNotify = 1  (Enabled)
+
+C:\Windows\system32>chkdsk C: /scan /forceofflinefix
+The type of the file system is NTFS.
+
+Stage 1: Examining basic file system structure ...
+  2126336 file records processed.
+File verification completed.
+ Phase duration (File record verification): 20.83 seconds.
+  33960 large file records processed.
+ Phase duration (Orphan file record recovery): 0.00 milliseconds.
+  0 bad file records processed.
+ Phase duration (Bad file record checking): 0.52 milliseconds.
+
+Stage 2: Examining file name linkage ...
+  4638 reparse records processed.
+  2938602 index entries processed.
+Index verification completed.
+ Phase duration (Index verification): 5.52 minutes.
+  0 unindexed files scanned.
+ Phase duration (Orphan reconnection): 35.74 seconds.
+  0 unindexed files recovered to lost and found.
+ Phase duration (Orphan recovery to lost and found): 0.38 milliseconds.
+  4638 reparse records processed.
+ Phase duration (Reparse point and Object ID verification): 17.90 milliseconds.
+
+Stage 3: Examining security descriptors ...
+Security descriptor verification completed.
+ Phase duration (Security descriptor verification): 409.31 milliseconds.
+  406134 data files processed.
+ Phase duration (Data attribute verification): 0.94 milliseconds.
+CHKDSK is verifying Usn Journal...
+  35623904 USN bytes processed.
+Usn Journal verification completed.
+ Phase duration (USN journal verification): 139.22 milliseconds.
+
+Windows has scanned the file system and found no problems.
+No further action is required.
+
+ 487747642 KB total disk space.
+ 462938928 KB in 1567571 files.
+    973112 KB in 406135 indexes.
+         0 KB in bad sectors.
+   2363122 KB in use by the system.
+     65536 KB occupied by the log file.
+  21472480 KB available on disk.
+
+      4096 bytes in each allocation unit.
+ 121936910 total allocation units on disk.
+   5368120 allocation units available on disk.
+Total duration: 6.47 minutes (388776 ms).
+
+C:\Windows\system32>type of the file system is NTFS.
+The system cannot find the file specified.
+Error occurred while processing: of.
+The system cannot find the file specified.
+Error occurred while processing: the.
+The system cannot find the file specified.
+Error occurred while processing: file.
+The system cannot find the file specified.
+Error occurred while processing: system.
+The system cannot find the file specified.
+Error occurred while processing: is.
+The system cannot find the file specified.
+Error occurred while processing: NTFS..

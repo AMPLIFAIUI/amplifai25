@@ -1,0 +1,40 @@
+Folder PATH listing
+Volume serial number is 00000076 DE4D:03A5
+C:\USERS\USER\DESKTOP\OPENAGENT
+³   agent-visualization.js
+³   demo-controller.js
+³   index.html
+³   main.js
+³   openmanus-integration.js
+³   _latest.manifest
+³   
+ÃÄÄÄ.vscode
+³       launch.json
+³       
+ÀÄÄÄall text info and learning
+    ³   AMP.png
+    ³   generated-icon.png
+    ³   
+    ÀÄÄÄamplifai_goals
+            111.txt
+            222.txt
+            amp self discoverylol.txt
+            AMP.ico
+            AMPLIFAI & AMP The Complete Vision & Technical Blueprint.txt
+            amplifai_goals.txt
+            AMP_GODMODE.txt
+            chatlog1.md
+            file path .txt
+            Grandeur.txt
+            knowledgebase.txt
+            more ideas.txt
+            more stuff.txt
+            New Text Document.txt
+            requirements.txt
+            server1 backend.txt
+            server2 frontend.txt
+            ui ferrofluid ideas.txt
+            ui ideas.txt
+            Untitled-1.md
+            visions2.txt
+            
