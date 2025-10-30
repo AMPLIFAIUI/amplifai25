@@ -1,123 +1,178 @@
-# AMPLIFAI UI Customization
 
-This repository contains the implementation of the AMPLIFAI UI customization feature that allows users to customize the website interface through natural language prompts.
+AMPLIFAI: COMPLETE SYSTEM ARCHITECTURE — EXTENDED DOCUMENTATION
 
-## Features
+---
 
-- Customization bar that appears at the top of the page
-- Natural language prompt processing
-- Theme customization (dark/light modes)
-- Font size adjustments
-- Layout modifications
-- History tracking of customization changes
-- User preference storage
-- Sandboxed code execution environment
+## 1. IMMUTABLE CORE ARCHITECTURE
 
-## Easy Setup with Embedded Python
+### 1.1 Purpose
+- The Amplifai Core is the AI's permanent reasoning and control center.
+- Nothing can alter the logic inside this environment.
+- Even AMP (the AI agent) itself can’t modify the core.
+- Immutable modules include: intent resolution, decision trees, core context memory, and task planning.
 
-Amplifai comes with scripts to set up a dedicated Python environment in the project folder, so users don't need to install Python separately.
+### 1.2 Technical Traits
+- Cryptographically signed at rest
+- Runs in a read-only container or virtual mount
+- Validates hash trees at runtime
+- No write access from external modules, plugins, users, or AMP rewrites
+- If a drift in logic is detected: AMP self-isolates, logs event, rolls back
 
-### Windows Setup
+### 1.3 Upgrade Path
+- Only developer/system-level upgrades can update core
+- Upgrades go through a formal patch validation process
+- Quarantine and validation layers still wrap updated modules
 
-1. Run `setup_embedded_python.ps1` from PowerShell:
-   ```
-   .\setup_embedded_python.ps1
-   ```
+---
 
-2. This will:
-   - Download and extract Python 3.10.11 to the `python_embedded` folder
-   - Install all required dependencies
-   - Create helper scripts to use this Python installation
+## 2. INNER QUARANTINE BUBBLE (IQB)
 
-3. To run Amplifai with the embedded Python:
-   ```
-   .\run_amplifai.bat
-   ```
+### 2.1 Purpose
+- Sandboxed inner zone within the core for simulation of trusted inputs
+- Designed to fast-track evaluation of important external code or internal rewrites
 
-4. To activate the embedded Python environment for development:
-   ```
-   .\activate_python.ps1
-   ```
+### 2.2 Behavior
+- No write-back to core
+- Memory-locked virtual container
+- Limited execution time, monitored call stack
+- Tasks evaluated for:
+  - Efficiency
+  - Safety
+  - Intent alignment
+  - Behavioral match
 
-### Linux/macOS Setup
+---
 
-1. Run `setup_embedded_python.sh`:
-   ```
-   chmod +x setup_embedded_python.sh
-   ./setup_embedded_python.sh
-   ```
+## 3. OUTER EXECUTION LAYER
 
-2. This will:
-   - Create a Python virtual environment in the `python_env` folder
-   - Install all required dependencies
-   - Create helper scripts to use this environment
+### 3.1 Purpose
+- This is where the user and AMP run live tasks, plugins, experiments
+- Includes all sandboxed environments and experimental code
 
-3. To run Amplifai with the embedded Python:
-   ```
-   ./run_amplifai.sh
-   ```
+### 3.2 Quarantine System
+- Filters any:
+  - External imports
+  - Plugin downloads
+  - AMP's own rewritten scripts
+- Checks:
+  - Import origin
+  - Function count & length
+  - Dangerous keywords
+  - Scope violation attempts
 
-4. To activate the Python environment for development:
-   ```
-   source ./activate_python.sh
-   ```
+### 3.3 Extractor Engine
+- Dissects unsafe or mixed modules into micro-units
+- Keeps parts that work, discards the rest
+- Tags each unit with:
+  - Usage type
+  - Trust metadata
+  - Source hash
 
-## Implementation Files
+---
 
-- `index.html`: Main HTML file for standalone implementation
-- `ui-customization.js`: JavaScript functionality
-- `ui-customization.css`: CSS styling
-- `announcement-bar-code.html`: HTML structure for implementation
-- `Amplifai/app/sandbox/`: Sandbox implementation for secure code execution
-- `Amplifai/tests/`: Test suite to verify functionality
+## 4. SANDBOX SYSTEM
 
-## Manual Setup
+### 4.1 Functionality
+- All code outside the core is executed in sandboxes
+- Limits file access, memory, and execution time
+- Includes:
+  - Task-specific runtime environments
+  - Savepoints
+  - Revert control
 
-If you prefer to use your own Python installation:
+---
 
-1. Ensure Python 3.10+ is installed
-2. Install dependencies:
-   ```
-   pip install -r Amplifai/requirements.txt
-   ```
-3. Run the application:
-   ```
-   python Amplifai/main.py
-   ```
+## 5. QUANTUM-GRADE SECURITY LAYER
 
-## Testing
+### 5.1 Encryption
+- Uses post-quantum crypto (e.g., Kyber, Falcon, Dilithium)
+- Key rotation with entropy seeding
+- Optional QKD between distributed nodes
 
-To run the test suite with the embedded Python:
+### 5.2 Model Protection
+- No model download access
+- Model split across encrypted runtime chunks
+- Attempts to trace or extract = system shutdown
 
-1. Activate the Python environment:
-   ```
-   # Windows
-   .\activate_python.ps1
-   
-   # Linux/macOS
-   source ./activate_python.sh
-   ```
+---
 
-2. Run the tests:
-   ```
-   python -m pytest Amplifai/tests/
-   ```
-- `inline-announcement-bar-code.js`: Complete code for Squarespace implementation
+## 6. MONETIZATION AND ACCESS CONTROL
 
-## Usage
+### 6.1 Tiers
+- Free Tier: Limited usage, slow queue
+- Starter: $15 AUD/mo (3-month intro)
+- Premium: $25 AUD/mo unlimited access
 
-This implementation can be:
-1. Used as a standalone page
-2. Embedded in a Squarespace site via a custom section
-3. Linked from a Squarespace site
+### 6.2 Promo Logic
+- New users get 3-month promo
+- Auto-renews at $25/mo
+- All handled through Stripe, Gumroad, or LemonSqueezy
 
-## Integration with Squarespace
+### 6.3 Token Gate System
+- Users are issued tokens upon signup
+- Token stores user tier, usage log, and timestamp
+- Backend enforces API access limits and unlocks features
 
-To integrate with Squarespace:
-1. Host this repository on GitHub Pages
-2. Link to the GitHub Pages URL from your Squarespace site
-3. Alternatively, embed the GitHub Pages URL in an iframe on your Squarespace site
+---
 
-## Development
+## 7. REPUTATION & CONTRIBUTOR TRUST
 
-This is a private repository for AMPLIFAI UI customization development.
+### 7.1 Profile System
+- Contributors gain:
+  - Trust score
+  - Module approval rate
+  - Peer installs
+
+### 7.2 Use
+- Higher scores = faster quarantine pass-through
+- No access to core regardless of score
+- AMP uses scores for prioritization only
+
+---
+
+## 8. MINI AMP AVATAR SYSTEM
+
+### 8.1 Core Features
+- Ferrofluid blob avatar
+- Morphs into prompt box
+- Visual states:
+  - Idle
+  - Listening
+  - Processing
+  - Success/Error
+- Double-click to interact
+- Framer Motion or WebGL planned
+
+---
+
+## 9. AMP PC PREVIEW PANEL
+
+- Bottom-right floating icon
+- Click to open browser view of AMP’s current task
+- Shows AMP navigating web or uploading files
+- User can “Take Control”
+- Defaults to 1/3 screen width, closable
+
+---
+
+## 10. USAGE LOGIC & UI FLOW
+
+- Suggestions panel under input (collapsible)
+- Chat window with formatted strategy cards
+- “Thinking block” collapses after 5+ lines, expandable
+- Animated progress arcs
+- Credential prompts when needed
+
+---
+
+## 11. FUTURE SYSTEMS
+
+- Plugin Marketplace (Nerve Hub)
+- Reputation-based module indexing
+- External AMP node networking
+- AI-to-AI optimization proposal queue
+- Contributor reward payouts
+
+---
+
+Immutable Core. Intelligent Outer. Quantum Safe. User Powered.
